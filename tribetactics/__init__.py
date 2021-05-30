@@ -1,12 +1,16 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-import os 
+from tribetactics.config import Config
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+db = SQLAlchemy()
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'This Is Secret Key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
-db = SQLAlchemy(app)
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(Config)
 
-from tribetactics import routes
+    db.init_app(app)
+
+    from tribetactics.main.routes import main
+    app.register_blueprint(main)
+
+    return app
