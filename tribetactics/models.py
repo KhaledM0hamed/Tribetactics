@@ -1,8 +1,13 @@
 from flask import current_app
-from tribetactics import db
+from tribetactics import db, login_manager
+from flask_login import UserMixin
 
 
-class User(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -59,6 +64,7 @@ class Item(db.Model):
     price = db.Column(db.Float(), nullable=False)
     menu_id = db.Column(db.Integer, db.ForeignKey('menus.id'), nullable=False)
     menu = db.relationship("Menu", back_populates="items")
+    orders = db.relationship("OrderItems", back_populates="item")
 
 class Order(db.Model):
     __tablename__ = 'orders'
@@ -66,11 +72,14 @@ class Order(db.Model):
     status = db.Column(db.String(20), nullable=False, default = 'Pending')
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'), nullable=False)
     restaurant = db.relationship("Restaurant", back_populates="orders")
-    items = db.relationship('Item', secondary='order_items')
+    # items = db.relationship('Item', secondary='order_items')
+    items = db.relationship("OrderItems", back_populates="order")
 
 class OrderItems(db.Model):
     __tablename__ = 'order_items'
-    id = db.Column(db.Integer(), primary_key=True)
-    order_id = db.Column(db.Integer(), db.ForeignKey('orders.id', ondelete='CASCADE'))
-    item_id = db.Column(db.Integer(), db.ForeignKey('items.id', ondelete='CASCADE'))
-
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id', ondelete='CASCADE'))
+    item_id = db.Column(db.Integer, db.ForeignKey('items.id', ondelete='CASCADE'))
+    quantity = db.Column(db.Integer)
+    order = db.relationship('Order', back_populates='items')
+    item = db.relationship('Item', back_populates='orders')
