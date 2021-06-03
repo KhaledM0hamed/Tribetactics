@@ -1,5 +1,5 @@
 # Tribetactics assessment 
-
+Web site link [http://laxeno.pythonanywhere.com/].
 ## Run locally 
 - `$ pip install -r requirements.txt` to install requirements
 - `$ python run.py` to run the server
