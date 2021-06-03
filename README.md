@@ -12,8 +12,14 @@
 3. Tests:
    - open CMD in `./tests` then execute `$ pytest` 
 
+<hr>
 
+>“I think I have satisfied all requirements, I will 
+be happy to have a discussion about anything in the
+project and all different options that may satisfy
+any part of the project, As I know it could be 
+better from the perspective of security and API or
+test coverage but due to the lack of time I made 
+sure to implement the requirements only.“ 
+<hr>
 
-```
-“I think I have satisfied all requirements, I will be happy to have a discussion about anything in the project and all different options that may satisfy any part of the project, As I know it could be better from the perspective of security and API or test coverage but due to the lack of time I made sure to implement the requirements only.“ 
-```
