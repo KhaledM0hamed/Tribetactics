@@ -1,0 +1,166 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Tribetactics Assessment"
+    },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Restaurant Request",
+            "description": " API for requesting and return restaurant requests"
+        }
+    ],
+    "paths": {
+        "/restaurant": {
+            "get": {
+                "tags": ["Restaurant Request"],
+                "summary": "Returns all restaurants",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/restaurant/{id}/menu": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the cat that we want to match",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": ["Restaurant Request"],
+                "summary": "Get restaurant menu with given ID",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "description": "Menu Request id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Misunderstood Request."
+                    },
+                    "404": {
+                        "description": "Failed. restaurant request not found."
+                    }
+                }
+            }
+        },
+        "/restaurant/{restaurant_id}/order": {
+            "parameters": [
+                {
+                    "name": "restaurant_id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the order that we want to match",
+                    "type": "string"
+                },
+                {
+                    "name": "x-access-tokens",
+                    "in": "header",
+                    "required": true,
+                    "description": "token of the order that we want to match",
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "tags": ["Restaurant Request"],
+                "summary": "Create a new Order request system",
+                "responses": {
+                    "201": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/restaurant/{restaurant_id}/order/{order_id}/item/{item_id}": {
+            "parameters": [
+                {
+                    "name": "restaurant_id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the restaurant that we want to match",
+                    "type": "string"
+                },
+                {
+                    "name": "order_id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the order that we want to match",
+                    "type": "string"
+                },
+                {
+                    "name": "item_id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of the item that we want to match",
+                    "type": "string"
+                },
+                {
+                    "name": "x-access-tokens",
+                    "in": "header",
+                    "required": true,
+                    "description": "token of the order that we want to match",
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "tags": ["Restaurant Request"],
+                "summary": "Create a new Order request system",
+                "requestBody": {
+                    "description": "Item Request Post Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/itemRequestPostBody"
+                            }
+                        }
+                    }    
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "itemRequestPostBody": {
+                "type": "object",
+                "properties": {
+                    "quantity": {
+                    "type": "integer",
+                    "format": "number"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -39,6 +39,10 @@ def create_restaurant():
 @restaurant_required
 def create_item(id):
     form = ItemForm()
+    item = Item.query.filter_by(name=form.name.data).first()
+    if item != None:
+        flash(f'This item name is taken before. Choose another one!', 'danger')
+        return redirect(url_for('dashboard.restaurant_dash'))
     if form.validate_on_submit():
         item = Item(name=form.name.data,
                     price=form.price.data,
