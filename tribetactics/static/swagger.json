@@ -13,9 +13,69 @@
         {
             "name": "Restaurant Request",
             "description": " API for requesting and return restaurant requests"
+        },
+        {
+            "name": "Authentication Request",
+            "description": " API for requesting and return login / register requests"
         }
     ],
     "paths": {
+        "/register": {
+            "post": {
+                "tags": ["Authentication Request"],
+                "summary": "create a new user request",
+                "requestBody": {
+                    "description": "user creation Request Post Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/registerRequestPostBody"
+                            }
+                        }
+                    }    
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": ["Authentication Request"],
+                "summary": "log In user request to get the user token",
+                "requestBody": {
+                    "description": "user authenticating Request Post Object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/loginRequestPostBody"
+                            }
+                        }
+                    }    
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Failed. Bad post data."
+                    }
+                }
+            }
+        },
         "/restaurant": {
             "get": {
                 "tags": ["Restaurant Request"],
@@ -158,6 +218,40 @@
                     "quantity": {
                     "type": "integer",
                     "format": "number"
+                    }
+                }
+            },
+            "loginRequestPostBody": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                    "type": "string",
+                    "format": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "string"
+                        }
+                }
+            },
+            "registerRequestPostBody": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "username": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "string"
+                    },
+                    "role": {
+                        "type": "string",
+                        "format": "string"
                     }
                 }
             }
