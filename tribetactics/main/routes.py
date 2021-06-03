@@ -6,8 +6,6 @@ from tribetactics.users.utils import admin_required, restaurant_required
 main = Blueprint('main', __name__)
 
 @main.route('/')
-@login_required
-@restaurant_required
 def home():
     return render_template('home.html')
 

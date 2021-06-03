@@ -1,14 +1,14 @@
-from tribetactics import db, create_app
-from flask_sqlalchemy import SQLAlchemy
-from tribetactics.models import *
+# from tribetactics import db, create_app
+# from flask_sqlalchemy import SQLAlchemy
+# from tribetactics.models import *
 
-try:
-    db.create_all(app=create_app())
-    print('database created')
-except:
-    print('database already created before')
+# try:
+#     db.create_all(app=create_app())
+#     print('database created')
+# except:
+#     print('database already created before')
 
-db = SQLAlchemy(app=create_app())
+# db = SQLAlchemy(app=create_app())
 
 # user = User(username='khaled',email='shit@gmail.com',password='Khaled123')
 # role = Role(name='user')
@@ -30,3 +30,10 @@ db = SQLAlchemy(app=create_app())
 
 # order = Order.query.get(1)
 # print(order)
+
+
+import os 
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+print('sqlite:///' + os.path.join(basedir, 'app.db'))

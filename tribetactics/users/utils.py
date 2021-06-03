@@ -1,7 +1,5 @@
 from flask import jsonify
 from functools import wraps
-from tribetactics import db
-from tribetactics.models import User
 from flask_login import current_user
 
 

@@ -1,0 +1,136 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="content-section">
+    {% if current_user.restaurants|length == 0 %}
+    <div class="text-center"> <!--// child#1 //-->
+        <h3 class="text-center mt-2">It seems that, you don't have any restaurants yet!</h3>
+        <br>
+        <a class="btn btn-outline-info mb-2" href='{{ url_for('dashboard.create_restaurant')}}'>Register a new restaurant</a>
+    </div> <!--// close of content section child#1 //-->
+    {% else %}
+    <div class="row"> <!--// child#2 //-->
+        <div class="col-md-12">
+            <h3 class="float-left mt-2 col-md-8">Restaurants</h3>
+            <a class=" float-right btn btn-outline-success mt-2" href='{{ url_for('dashboard.create_restaurant')}}'>+ new restaurant</a>
+        </div>
+    </div> <!--// close of content section child#2 //-->
+    <br>
+    <div class="col-md-12"> <!--// child#3 //-->
+        {% for restaurant in current_user.restaurants %}
+        <div id="accordion"> <!--// accordion //-->
+            <div class="card"> <!--// card //-->
+                <div class="card-header" id="headingOne"> <!--// card header //-->
+                    <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#{{restaurant.name}}" aria-expanded="true" aria-controls="collapseOne">
+                        <h5>{{ restaurant.name }}</h5>
+                    </button>
+                    </h5>
+                </div> <!--// close of card header //-->
+                <div id="{{restaurant.name}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion"> <!--// card body //-->
+                    <div class="card-body"> <!--// card body //-->
+                        {% if not restaurant.menu %}
+                        <div class="text-center">
+                            <h6 class="text-center mt-1">It seems that, you don't have any items in your menu!</h6>
+                            <br>
+                            <a class="btn btn-outline-info mb-1" href='{{ url_for('dashboard.create_item', id=restaurant.menu.id)}}'>+ Add new Item</a>
+                        </div>
+                        {% else %}
+                        <ul class="nav nav-tabs" id="{{restaurant.name}}Tab" role="tablist">
+                            <li class="nav-item">
+                            <a class="nav-link active" id="{{restaurant.name}}Menu-tab" data-toggle="tab" href="#{{restaurant.name}}Menu" role="tab">Menu</a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link" id="{{restaurant.name}}Order-tab" data-toggle="tab" href="#{{restaurant.name}}Order" role="tab">Orders</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="{{restaurant.name}}TabContent"><!--// tap content //-->
+                            <div class="tab-pane fade show active" id="{{restaurant.name}}Menu" role="tabpanel"><!--// Menu tab content //-->
+                                <!-- ITEMS page  -->
+                                <div class="row"><!-- ITEMS page row -->
+                                    <div class="col-md-12">
+                                        <h3 class="float-left mt-2 col-md-8">Menu</h3>
+                                        <a class=" float-right btn btn-outline-success mt-2" href='{{ url_for('dashboard.create_item', id=restaurant.menu.id)}}'>+ new Item</a>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        {% if not restaurant.menu.items %}
+                                        <div class="text-center">
+                                            <h6 class="text-center mt-1">It seems that, you don't have any items yet! add some!!</h6>
+                                        </div>
+                                        {% else %}
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 15%" scope="col">#</th>
+                                                    <th style="width: 30%" scope="col">name</th>
+                                                    <th style="width: 30%" scope="col">price</th>
+                                                    <th style="width: 25%" scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in restaurant.menu.items %}
+                                                <tr>
+                                                    <th scope="row">{{restaurant.menu.items.index(item)}}</th>
+                                                    <td>{{item.name}}</td>
+                                                    <td>{{item.price}} $</td>
+                                                    <td class="text-right">
+                                                        <a class="btn btn-outline-info" href='{{ url_for('dashboard.edit_item', item_id=item.id)}}'>🔧 Edit</a>
+                                                        <a class="btn btn-outline-danger" href='{{ url_for('dashboard.delete_item', item_id=item.id)}}'>🗑️ Delete</a>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        {% endif %}
+                                    </div>
+
+
+                                </div>
+                            </div><!--// close of Menu tap content //-->
+                            <div class="tab-pane fade" id="{{restaurant.name}}Order" role="tabpanel"><!--// Order tap content //-->
+                                <!-- ORDERS page  -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 class="float-left mt-2 col-md-8">Orders</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 15%" scope="col">#</th>
+                                            <th style="width: 30%" scope="col">Order_id</th>
+                                            <th style="width: 30%" scope="col">Status</th>
+                                            <th style="width: 25%" scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order in restaurant.orders %}
+                                            <tr>
+                                                <th scope="row">{{restaurant.orders.index(order)}}</th>
+                                                <td>{{order.id}}</td>
+                                                <td>{{order.status}}</td>
+                                                {% if order.status == 'Pending' %}
+                                                <td class="text-right">
+                                                    <a class="btn btn-outline-info" href='{{ url_for('dashboard.deliver_order', order_id=order.id)}}'>✔️ Mark as Delivered</a>
+                                                </td>
+                                                {% else %}
+                                                <td></td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div> <!--// close of Order tap content //-->
+                        </div><!--// close of tab content //-->
+                        {% endif %}
+                    </div><!--// close of card body //-->
+                </div><!--// close of card body //-->
+            </div><!--// close of card //-->
+        </div> <!--// close of accordion //-->
+        {% endfor %}
+    </div> <!--// close of content section child#3 //-->
+    {% endif %}
+</div> <!--// close of content section //-->
+{% endblock content %}

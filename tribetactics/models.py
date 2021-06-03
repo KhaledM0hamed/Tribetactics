@@ -69,7 +69,7 @@ class Item(db.Model):
 class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String(20), nullable=False, default = 'Pending')
+    status = db.Column(db.String(20), nullable=False, server_default = 'Pending')
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'), nullable=False)
     restaurant = db.relationship("Restaurant", back_populates="orders")
     # items = db.relationship('Item', secondary='order_items')
